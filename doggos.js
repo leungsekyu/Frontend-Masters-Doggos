@@ -98,13 +98,40 @@ async function displayDogImagesByBreed(breed) {
     } else {
       img.alt = breeds[breed].translation;
     }
-
     img.classList.add('dog-img');
     document.querySelector('#display').appendChild(img);
+  });
 
-    // hide spinner
-    img.addEventListener('load', function () {
-      $('#logo').removeClass('spin');
+  // hide spinner
+  // console.log(document.querySelectorAll('.dog-img'));
+  // document.querySelectorAll('.dog-img').forEach((img) => {
+  //   img.addEventListener('load', function () {
+  //     $('#logo').removeClass('spin');
+  //   });
+  // });
+  // document.querySelector('.dog-img').addEventListener('load', function () {
+  //   $('#logo').removeClass('spin');
+  // });
+
+  $(document).ready(function () {
+    // When we begin, assume no images are loaded.
+    var imagesLoaded = 0;
+    // Count the total number of images on the page when the page has loaded.
+    var totalImages = $('img').length;
+    console.log(totalImages);
+
+    // After an image is loaded, add to the count, and if that count equals the
+    // total number of images, fire the allImagesLoaded() function.
+    $('img').on('load', function (event) {
+      imagesLoaded++;
+      if (imagesLoaded == totalImages) {
+        allImagesLoaded();
+      }
     });
   });
+}
+
+function allImagesLoaded() {
+  console.log('ALL IMAGES LOADED');
+  $('#logo').removeClass('spin');
 }
