@@ -103,35 +103,40 @@ async function displayDogImagesByBreed(breed) {
   });
 
   // hide spinner
-  // console.log(document.querySelectorAll('.dog-img'));
-  // document.querySelectorAll('.dog-img').forEach((img) => {
-  //   img.addEventListener('load', function () {
-  //     $('#logo').removeClass('spin');
-  //   });
-  // });
-  // document.querySelector('.dog-img').addEventListener('load', function () {
-  //   $('#logo').removeClass('spin');
-  // });
+  // https://www.seancdavis.com/posts/wait-until-all-images-loaded/
+  $(function () {
+    let imagesLoaded = 0;
+    let totalImages = $('.dog-img').length;
 
-  $(document).ready(function () {
-    // When we begin, assume no images are loaded.
-    var imagesLoaded = 0;
-    // Count the total number of images on the page when the page has loaded.
-    var totalImages = $('img').length;
-    console.log(totalImages);
+    $('.dog-img').each(function (idx, dogImg) {
+      $('<img>').on('load', imageLoaded).attr('src', $(dogImg).attr('src'));
+    });
 
-    // After an image is loaded, add to the count, and if that count equals the
-    // total number of images, fire the allImagesLoaded() function.
-    $('img').on('load', function (event) {
+    function imageLoaded() {
       imagesLoaded++;
-      if (imagesLoaded == totalImages) {
+      if (imagesLoaded === totalImages) {
         allImagesLoaded();
       }
-    });
-  });
-}
+    }
 
-function allImagesLoaded() {
-  console.log('ALL IMAGES LOADED');
-  $('#logo').removeClass('spin');
+    function allImagesLoaded() {
+      $('#logo').removeClass('spin');
+    }
+  });
+
+  // hide spinner
+  // raw JavaScript version
+
+  // let imagesLoaded = 0;
+  // let totalImages = document.querySelectorAll('.dog-img').length;
+
+  // document.querySelectorAll('.dog-img').forEach((img) => {
+  //   img.addEventListener('load', function () {
+  //     imagesLoaded++;
+
+  //     if (imagesLoaded === totalImages) {
+  //       $('#logo').removeClass('spin');
+  //     }
+  //   });
+  // });
 }
